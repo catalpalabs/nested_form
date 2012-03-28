@@ -7,6 +7,27 @@ This gem only works with Rails 3. See the {rails2 branch}[https://github.com/rya
 An example project showing how this works is available in the {complex-nested-forms/nested_form branch}[https://github.com/ryanb/complex-form-examples/tree/nested_form].
 
 
+== This Fork
+
+I need a simple way to support doubly nested forms containing associations with the same name (related to issue #45, I believe). In the case where:
+
+  User
+    has_many :addresses
+    has_many :contacts
+    ...
+  
+  Contact
+    belongs_to :user
+    has_many :addresses
+    
+A nested contact form (within the user form) can set the :association_name explicitly to avoid duplication of the address association mechanism:
+
+  <%= f.fields_for :addresses do |builder| %>
+    <%= render 'shared/address_fields', :f => builder %>
+  <% end %>
+  <%= f.link_to_add 'add another', :addresses, :association_name => :contact_addresses %>
+
+
 == Changes in this repo
 
 === Enhanced jQuery javascript template
